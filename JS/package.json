@@ -1,0 +1,18 @@
+{
+  "name": "likeposts",
+  "version": "1.0.0",
+  "description": "search who like an specific ig post",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chromedriver": "^103.0.0",
+    "fs-extra": "^10.1.0",
+    "geckodriver": "^3.0.2",
+    "node-fetch": "^2.6.7",
+    "selenium-webdriver": "^4.3.1"
+  }
+}
