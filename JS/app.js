@@ -34,7 +34,7 @@ async function postLike(
 
   fs.appendFile(
     `./posts/${postID}.txt`,
-    `Post No.:${id}\nUsername of people who liked the post:\n`,
+    `Post No.:${id + 1} \nUsername of people who liked the post:\n`,
     (err) => {
       if (err) {
         console.log(err);
@@ -116,17 +116,17 @@ async function postLike(
       break;
     }
 
-    await driver.sleep(random(2500));
+    await driver.sleep(random(3500));
     // back to ig page and do random stuffs
     await driver.getAllWindowHandles().then(async function (handles) {
       return driver.switchTo().window(handles[0]);
     });
-    await driver.sleep(random(2500));
+    await driver.sleep(random(3500));
     await driver.wait(until.elementsLocated(By.css("div._acut"), 10000));
     let el = await driver.findElements(By.css("div._acut"));
     let temp = Math.floor(random(5));
     await el[temp].click();
-    await driver.sleep(random(7500));
+    await driver.sleep(random(12500));
     switch (temp) {
       case 0:
         break;
@@ -157,7 +157,7 @@ async function postLike(
         console.log("Error");
         break;
     }
-    await driver.sleep(random(2500));
+    await driver.sleep(random(3500));
   }
   await driver.getAllWindowHandles().then(async function (handles) {
     return driver.switchTo().window(handles[0]);
@@ -257,7 +257,6 @@ async function getLike(
         let post = posts.data.user.edge_owner_to_timeline_media.edges;
         end_cursor =
           posts.data.user.edge_owner_to_timeline_media.page_info.end_cursor;
-        postNo = posts.data.user.edge_owner_to_timeline_media.count;
         for (let i = 0; i < 50; i++) {
           postID[i] = post[i].node.shortcode;
         }
@@ -292,21 +291,22 @@ async function getLike(
     console.log(postID);
     let shortcodes = postID.toString();
 
-    fs.appendFileSync("./post.txt", shortcodes, (err) => {
+    fs.appendFileSync("./post.txt", postID, (err) => {
       if (err) {
         console.log(err);
       }
     });
 
     // get usernames of every posts
-    for (let i = 0; i < postNo; i++) {
-      await postLike(postID[i], userName, password, driver);
+    for (let i = 0; i < postID.length; i++) {
+      await postLike(i, postID[i], userName, password, driver);
     }
   } else {
+    await driver.get("https://www.google.com");
     let a;
-    fs.readFileSync("post.txt", "utf8", function (err, data) {
-      postID = data.split(",");
-    });
+    const data = fs.readFileSync("./post.txt", { encoding: "utf8", flag: "r" });
+    const postID = data.split(",");
+
     for (let i = 0; i < postID.length; i++) {
       try {
         postID[i].should.equal(shortcode);
@@ -316,12 +316,13 @@ async function getLike(
       a = i;
       break;
     }
-    for (let i = a; i < postNo; i++) {
-      await postLike(i, postID[i], userName, password, driver);
+
+    for (let i = a; i < postID.length; i++) {
+      await postLike(i, postID[i], userName, password, driver, end_cursor_like);
     }
   }
 
   await driver.quit();
 }
 
-getLike(273583714, "ceplutenocnarovich", "look4kol");
+getLike(273583714, "ceplutenocnarovich", "look4kol", "Cgy1QIcLS77");
