@@ -111,9 +111,9 @@ async function postLike(
       if (next_page == false) {
         break;
       }
-    } catch (err) {
-      console.log(err);
-      break;
+    } catch (e) {
+      console.log(e);
+      continue;
     }
 
     await driver.sleep(random(3500));
@@ -121,43 +121,49 @@ async function postLike(
     await driver.getAllWindowHandles().then(async function (handles) {
       return driver.switchTo().window(handles[0]);
     });
-    await driver.sleep(random(3500));
-    await driver.wait(until.elementsLocated(By.css("div._acut"), 10000));
-    let el = await driver.findElements(By.css("div._acut"));
-    let temp = Math.floor(random(5));
-    await el[temp].click();
-    await driver.sleep(random(12500));
-    switch (temp) {
-      case 0:
-        break;
-      case 1:
-        await driver.wait(until.elementsLocated(By.css("div._aagx"), 10000));
-        await driver.findElement(By.css("div._aagx")).click();
-        break;
-      case 2:
-        await driver.wait(
-          until.elementsLocated(
-            By.css("div.futnfnd5.li38xygf.q0p5rdf8.mudwbb97"),
-            10000
-          )
-        );
-        await driver
-          .findElement(By.css("div.futnfnd5.li38xygf.q0p5rdf8.mudwbb97"))
-          .click();
-        break;
-      case 3:
-        await driver.wait(until.elementsLocated(By.css("div._aagx"), 10000));
-        await driver.findElement(By.css("div._aagx")).click();
-        break;
-      case 4:
-        await driver.wait(until.elementsLocated(By.css("div._aa73"), 10000));
-        await driver.findElement(By.css("div._aa73")).click();
-        break;
-      default:
-        console.log("Error");
-        break;
+
+    try {
+      await driver.sleep(random(3500));
+      await driver.wait(until.elementsLocated(By.css("div._acut"), 10000));
+      let el = await driver.findElements(By.css("div._acut"));
+      let temp = Math.floor(random(5));
+      await el[temp].click();
+      await driver.sleep(random(12500));
+      switch (temp) {
+        case 0:
+          break;
+        case 1:
+          await driver.wait(until.elementsLocated(By.css("div._aagx"), 10000));
+          await driver.findElement(By.css("div._aagx")).click();
+          break;
+        case 2:
+          await driver.wait(
+            until.elementsLocated(
+              By.css("div.futnfnd5.li38xygf.q0p5rdf8.mudwbb97"),
+              10000
+            )
+          );
+          await driver
+            .findElement(By.css("div.futnfnd5.li38xygf.q0p5rdf8.mudwbb97"))
+            .click();
+          break;
+        case 3:
+          await driver.wait(until.elementsLocated(By.css("div._aagx"), 10000));
+          await driver.findElement(By.css("div._aagx")).click();
+          break;
+        case 4:
+          await driver.wait(until.elementsLocated(By.css("div._aa73"), 10000));
+          await driver.findElement(By.css("div._aa73")).click();
+          break;
+        default:
+          console.log("Error");
+          break;
+      }
+      await driver.sleep(random(3500));
+    } catch (e) {
+      console.log(e);
+      continue;
     }
-    await driver.sleep(random(3500));
   }
   await driver.getAllWindowHandles().then(async function (handles) {
     return driver.switchTo().window(handles[0]);
@@ -326,3 +332,5 @@ async function getLike(
 }
 
 getLike(273583714, "ceplutenocnarovich", "look4kol", "Cgy1QIcLS77");
+
+//QVFEMmhfZGtOZlFmbmtVa2RwbGlrNWFkeUdXZGVfaG93UDR6aUpmdzBIX1NvLTZMOFJBaWltdUlkU002VE1hc2VuUWpHTDBPVG1BbDVNa2JZVnJjd3JSMQ==
