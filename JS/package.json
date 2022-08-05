@@ -9,10 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.3.6",
     "chromedriver": "^103.0.0",
     "fs-extra": "^10.1.0",
-    "geckodriver": "^3.0.2",
-    "node-fetch": "^2.6.7",
     "selenium-webdriver": "^4.3.1"
   }
 }
