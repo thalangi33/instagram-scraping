@@ -94,10 +94,19 @@ async function postLike(
           let liker = likes.data.shortcode_media.edge_liked_by.edges;
           end_cursor_like =
             likes.data.shortcode_media.edge_liked_by.page_info.end_cursor;
+          fs.writeFileSync(
+            "./end_cursor.txt",
+            `${postID}\n${end_cursor_like}`,
+            (err) => {
+              if (err) {
+                console.log(err);
+              }
+            }
+          );
           next_page =
             likes.data.shortcode_media.edge_liked_by.page_info.has_next_page;
           liker.forEach((fol) => {
-            fs.appendFile(
+            fs.appendFileSync(
               `./posts/${postID}.txt`,
               `${fol.node.username}\n`,
               (err) => {
@@ -168,24 +177,37 @@ async function postLike(
   await driver.getAllWindowHandles().then(async function (handles) {
     return driver.switchTo().window(handles[0]);
   });
-  let el = await driver.findElements(By.css("div._acut"));
-  await el[5].click();
-  await driver.wait(until.elementsLocated(By.css("div._abm4"), 10000));
-  let button = await driver.findElements(By.css("div._abm4"));
-  await button[1].click();
-  await driver.sleep(random(50000));
-  // login ig account
-  let account = await driver.findElement(By.name("username"));
-  await sendHumanKeys(account, userName);
-  await driver.sleep(random(5000));
-  let accountPass = await driver.findElement(By.name("password"));
-  await sendHumanKeys(accountPass, password);
-  await driver.findElement(By.css("button.sqdOP.L3NKy.y3zKF")).click();
-  await driver.sleep(15000);
-  await driver.findElement(By.css("button.sqdOP.yWX7d.y3zKF")).click();
-  await driver.wait(until.elementsLocated(By.css("button._a9--._a9_1"), 10000));
-  await driver.findElement(By.css("button._a9--._a9_1")).click();
-  await driver.sleep(random(5000));
+
+  // logout and re-login
+  try {
+    let el = await driver.findElements(By.css("div._acut"));
+    await el[5].click();
+    await driver.sleep(random(2000));
+    await driver.wait(until.elementsLocated(By.css("div._abm4"), 10000));
+    let button = await driver.findElements(By.css("div._abm4"));
+    await button[1].click();
+    await driver.sleep(random(50000));
+    // login ig account
+    let account = await driver.findElement(By.name("username"));
+    await sendHumanKeys(account, userName);
+    await driver.sleep(random(5000));
+    let accountPass = await driver.findElement(By.name("password"));
+    await sendHumanKeys(accountPass, password);
+    await driver.findElement(By.css("button.sqdOP.L3NKy.y3zKF")).click();
+    await driver.sleep(random(5000));
+    await driver.wait(
+      until.elementsLocated(By.css("button.sqdOP.yWX7d.y3zKF"), 10000)
+    );
+    await driver.findElement(By.css("button.sqdOP.yWX7d.y3zKF")).click();
+    await driver.sleep(2000);
+    await driver.wait(
+      until.elementsLocated(By.css("button._a9--._a9_1"), 10000)
+    );
+    await driver.findElement(By.css("button._a9--._a9_1")).click();
+  } catch (e) {
+    console.log(e);
+    return;
+  }
 }
 
 // the main function
@@ -241,7 +263,10 @@ async function getLike(
   let accountPass = await driver.findElement(By.name("password"));
   await sendHumanKeys(accountPass, password);
   await driver.findElement(By.css("button.sqdOP.L3NKy.y3zKF")).click();
-  await driver.sleep(15000);
+  await driver.sleep(random(5000));
+  await driver.wait(
+    until.elementsLocated(By.css("button.sqdOP.yWX7d.y3zKF"), 10000)
+  );
   await driver.findElement(By.css("button.sqdOP.yWX7d.y3zKF")).click();
   await driver.wait(until.elementsLocated(By.css("button._a9--._a9_1"), 10000));
   await driver.findElement(By.css("button._a9--._a9_1")).click();
@@ -297,7 +322,7 @@ async function getLike(
     console.log(postID);
     let shortcodes = postID.toString();
 
-    fs.appendFileSync("./post.txt", postID, (err) => {
+    fs.appendFileSync("./post.txt", shortcodes, (err) => {
       if (err) {
         console.log(err);
       }
