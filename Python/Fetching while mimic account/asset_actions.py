@@ -12,6 +12,69 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 import random
+import json, os
+
+def find_avaiable_user(dirname):
+    POINT = 0
+    path_f1 = os.path.relpath(".\\info\\accounts.txt", dirname)
+
+    with open(path_f1, "r+") as f1:
+        contents = f1.read()
+        json_info = json.loads(contents)
+        user_account = json_info["users"]
+
+        for user in user_account:
+            if user["status"] == "online":
+                username = user["username"]
+                password = user["password"]
+                break
+
+    return username, password
+
+# moving the current user from the end of the list after logging out
+def put_user_end(username, dirname):
+    path_f1 = os.path.relpath(".\\info\\accounts.txt", dirname)
+
+    with open(path_f1, "r+") as f1:
+        contents = f1.read()
+        json_info = json.loads(contents)
+        user_account = json_info["users"]
+
+        # finding user info with same username
+        for idx, user in enumerate(user_account):
+            if user["username"] == username:
+                POINT = idx
+                break
+        
+        # moving the current user to the end of the list
+        temp = user_account.pop(POINT)
+        user_account.append(temp)
+        json_info["users"] = user_account
+        f1.truncate(0)
+
+    with open(path_f1, "r+") as f1:
+        temp_string = json.dumps(json_info, indent=4)
+        f1.write(temp_string)
+
+def change_status_banned(username, dirname):
+    path_f1 = os.path.relpath(".\\info\\accounts.txt", dirname)
+
+    with open(path_f1, "r+") as f1:
+        contents = f1.read()
+        json_info = json.loads(contents)
+        user_account = json_info["users"]
+
+        for idx, user in enumerate(user_account):
+            if user["username"] == username:
+                user["status"] = "banned"
+                break
+        
+        json_info["users"] = user_account
+        f1.truncate(0)
+
+        with open(path_f1, "r+") as f1:
+            temp_string = json.dumps(json_info, indent=4)
+            f1.write(temp_string)
 
 def setup_driver():
     opts = Options()
@@ -186,7 +249,7 @@ def saving_random_post_explore(driver, load_num):
 
     # finding the number of avaliable save buttons >> available posts
     try:
-        save_button = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div > button._abl- > div._abm0 > svg._ab6-")))
+        save_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div > button._abl- > div._abm0 > svg._ab6-")))
         time.sleep(random.uniform(5,7))
         save_button = driver.find_elements(By.CSS_SELECTOR, "div > button._abl- > div._abm0 > svg._ab6-")
         random_num = random.randint(1, len(save_button))
@@ -202,7 +265,6 @@ def saving_random_post_explore(driver, load_num):
             driver.execute_script("arguments[0].scrollIntoView();", random_post)
             location = save_button[random_num - 1].location.get("y")
             driver.execute_script("window.scrollTo(0, arguments[0]);", location)
-            time.sleep(3)
 
             if random.randint(1, 2) == 1:
                 save_button[random_num - 1].click()
@@ -275,7 +337,7 @@ def profile_page_actions(driver, loop_times):
 
     # looping the profile tabs for loop_times
     for i in range(0, loop_times + 1):
-        random_tab = 2
+        random_tab = random.randint(0,3)
         tabs_profile[random_tab](driver)
         time.sleep(random.uniform(1,3))
 
@@ -303,17 +365,30 @@ def random_actions_selector(driver):
 
     # parameters for different actions
     if random_actions_num == 0:
-        random_actions[random_actions_num](driver, random.randint(3,5))
+        random_actions[random_actions_num](driver, random.randint(1,3))
     elif random_actions_num == 1:
-        random_actions[random_actions_num](driver, random.randint(3,5))
+        random_actions[random_actions_num](driver, random.randint(1,3))
     elif random_actions_num == 2:
-        random_actions[random_actions_num](driver, random.randint(3,5))
+        random_actions[random_actions_num](driver, random.randint(1,3))
     elif random_actions_num == 3:
         random_actions[random_actions_num](driver, random_string[random.randint(0,2)])
     elif random_actions_num == 4:
         random_actions[random_actions_num](driver)
     elif random_actions_num == 5:
-        random_actions[random_actions_num](driver, random.randint(3,5))
+        random_actions[random_actions_num](driver, random.randint(1,3))
 
     # if presentation found when going to homepage, press cancel
     cancel_notificaition(driver)
+
+# create new tab (only 2 tabs in total, cannot add)
+def create_new_tab(driver):
+    tab_1 = driver.window_handles[0]
+    driver.execute_script("window.open('about:blank', 'tab2');")
+    tab_2 = driver.window_handles[1]
+    driver.switch_to.window(tab_2)
+    driver.execute_script("window.stop();")
+    driver.get("https://www.instagram.com/")
+    time.sleep(random.uniform(5,6))
+    cancel_notificaition(driver)
+
+    return tab_1, tab_2

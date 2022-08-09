@@ -18,10 +18,6 @@ import json
 import os
 from asset_actions import *
 
-
-USERNAME = "fapnurahavich"
-PASSWORD = "look4kol"
-SEARCH_USER = "53yfp"
 DIRNAME = os.path.dirname(__file__)
 
 next_max_id = "QVFEckNrZkpOOXlmcU8zSHBaX0ZfRGxoTGZReGdDVjdoaEpUMHV1ZjdieGJrcEFuT1V0S1p1Um0wR3FYQ01NTTNjT1FTOTZnald2WHg4UGNLNm10VTJzZA=="
@@ -35,6 +31,12 @@ FETCH_TIMES = 4
 
 # setup the driver
 driver = setup_driver()
+
+# find userss
+acc_info = find_avaiable_user(DIRNAME)
+
+USERNAME = acc_info[0]
+PASSWORD = acc_info[1]
 
 # login to instagram
 login_instagram(driver, USERNAME, PASSWORD)
