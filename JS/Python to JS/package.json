@@ -1,0 +1,17 @@
+{
+  "name": "js-selenium",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test_api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chromedriver": "^104.0.0",
+    "fs-extra": "^10.1.0",
+    "selenium": "^2.20.0",
+    "selenium-webdriver": "^4.3.1"
+  }
+}
