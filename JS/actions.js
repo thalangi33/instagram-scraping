@@ -13,6 +13,7 @@ function setup() {
     "--headless",
     "--no-sandbox",
     "--disable-dev-shm-usage",
+    "--remote-debugging-port=9222",
   ]);
 
   const driver = new Builder()
