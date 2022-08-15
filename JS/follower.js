@@ -10,7 +10,7 @@ var actions = require("./actions");
 const { stat } = require("fs");
 
 async function main() {
-    USERNAME = "choldybinabiridaniva";
+    USERNAME = "fapnurahavich";
     PASSWORD = "look4kol";
 
     // variables for fetching
