@@ -12,6 +12,7 @@
     "chai": "^4.3.6",
     "chromedriver": "^103.0.0",
     "fs-extra": "^10.1.0",
-    "selenium-webdriver": "^4.3.1"
+    "path": "^0.12.7",
+    "selenium-webdriver": "^4.4.0"
   }
 }

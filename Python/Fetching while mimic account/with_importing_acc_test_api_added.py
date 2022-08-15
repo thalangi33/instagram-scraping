@@ -32,7 +32,7 @@ FETCH_TIMES = 4
 # setup the driver
 driver = setup_driver()
 
-# find userss
+# find users
 acc_info = find_avaiable_user(DIRNAME)
 
 USERNAME = acc_info[0]
