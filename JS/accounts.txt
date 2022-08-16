@@ -1,0 +1,19 @@
+{
+    "users": [
+        {
+            "username": "gorfunrelyakimov",
+            "password": "look4kol",
+            "status": "banned"
+        },
+        {
+            "username": "fapnurahavich",
+            "password": "look4kol",
+            "status": "online"
+        },
+        {
+            "username": "choldybinabiridaniva",
+            "password": "look4kol",
+            "status": "banned"
+        }
+    ]
+}
