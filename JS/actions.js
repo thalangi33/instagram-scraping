@@ -1,12 +1,12 @@
 const { Builder, Capabilities, By, until, Key } = require("selenium-webdriver");
-const chrome = require("selenium-webdriver/chrome");
+const firefox = require("selenium-webdriver/firefox");
 const error = require("selenium-webdriver/lib/error");
 require("chromedriver");
 const fs = require("fs-extra");
 const caps = new Capabilities();
 
 function setup() {
-  const opts = new chrome.Options();
+  const opts = new firefox.Options();
   caps.setPageLoadStrategy("none");
   opts.addArguments([
     "--headless",
@@ -17,7 +17,7 @@ function setup() {
 
   const driver = new Builder()
     .withCapabilities(caps)
-    .forBrowser("chrome")
+    .forBrowser("firefox")
     .setChromeOptions(opts)
     .build();
 
@@ -55,11 +55,7 @@ async function loginInstagram(driver, bot_username, bot_password) {
   await driver.get("https://www.instagram.com");
 
   let login = await driver.wait(
-    until.elementLocated(
-      By.xpath(
-        "/html/body/div[1]/section/main/article/div/div/div[2]/div[3]/button[1]"
-      )
-    ),
+    until.elementLocated(By.css("button.sqdOP.yWX7d.y3zKF")),
     10000
   );
   console.log("Login page is ready!");
