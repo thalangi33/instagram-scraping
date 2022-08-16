@@ -1,4 +1,11 @@
-const { Builder, Capabilities, By, until, Key } = require("selenium-webdriver");
+const {
+    Builder,
+    Capabilities,
+    By,
+    until,
+    Key,
+    WebDriver,
+} = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
 const error = require("selenium-webdriver/lib/error");
 require("chromedriver");
@@ -18,8 +25,6 @@ function setup() {
         .setChromeOptions(opts)
         .build();
 
-    // await driver.get("https://www.google.com")
-
     return driver;
 }
 
@@ -27,21 +32,21 @@ async function readStatus() {
     const data = await fs.promises.readFile("status.txt", "utf8");
     return data;
 }
-async function statusGet(){
-    let temp = {}
-    await readStatus().then(data => {
-        console.log(data)
-        temp = JSON.parse(data)
+async function statusGet() {
+    let temp = {};
+    await readStatus().then((data) => {
+        console.log(data);
+        temp = JSON.parse(data);
     });
-    return temp
+    return temp;
 }
 
 async function writeStatus(jsonInfo) {
-    fs.writeFileSync("status.txt", JSON.stringify(jsonInfo),(e) => {
+    fs.writeFileSync("status.txt", JSON.stringify(jsonInfo, null, 4), (e) => {
         if (err) {
             console.log(err);
         }
-    })
+    });
 }
 
 function getRandomFloat(min, max) {
@@ -214,8 +219,7 @@ async function clickActivitySection(driver) {
     let activity = await driver.wait(
         until.elementLocated(
             By.xpath(
-                // Error here
-                "/tml/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/nav/div/div/div/div/div/div[4]/a"
+                "/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/nav/div/div/div/div/div/div[4]/a"
             )
         ),
         10000
@@ -510,6 +514,72 @@ async function randomActionSelector(driver) {
     await cancelNotificaiton(driver);
 }
 
+// read accounts.txt
+async function readAccount() {
+    const data = await fs.promises.readFile("accounts.txt", "utf8");
+    return data;
+}
+
+// get the info of all accounts
+async function accountGet() {
+    let temp = {};
+    await readAccount().then((data) => {
+        temp = JSON.parse(data);
+    });
+    return temp;
+}
+
+// find the first online available user
+async function findAvailableUser() {
+    let userAccount = await accountGet();
+    console.log(userAccount);
+
+    for (let user of userAccount["users"]) {
+        if (user.status === "online") {
+            username = user.username;
+            password = user.password;
+        }
+    }
+    return { username, password };
+}
+
+// change the status of the inputted username into banned
+async function changeStatusBanned(username) {
+    // get info about the accounts
+    let userAccount = await accountGet();
+    let tempUserAccount = userAccount["users"];
+
+    // change the status of the inputted username into banned
+    for (let user of tempUserAccount) {
+        if (user["username"] === username) {
+            user["status"] = "banned";
+            break;
+        }
+    }
+    userAccount["users"] = tempUserAccount;
+    await fs.promises
+        .writeFile("accounts.txt", JSON.stringify(userAccount, null, 4))
+        .then(() => console.log("Success in changing the status into banned!"));
+}
+
+// putting inputted username at the end of the list
+async function putUserEnd(username) {
+    // get info about the accounts
+    let userAccount = await accountGet();
+    let tempUserAccount = userAccount["users"];
+
+    // finding usre info with same username
+    let result = tempUserAccount.find((user) => user.username === username);
+
+    // moving the current user to the end of the list
+    let temp = tempUserAccount.filter((user) => user.username !== username);
+    temp.push(result);
+    userAccount["users"] = temp;
+    await fs.promises
+        .writeFile("accounts.txt", JSON.stringify(userAccount, null, 4))
+        .then(() => console.log("Success in changing the acc order!"));
+}
+
 module.exports = {
     getRandomFloat,
     readStatus,
@@ -532,4 +602,7 @@ module.exports = {
     activityPause,
     profilePageActions,
     randomActionSelector,
+    findAvailableUser,
+    changeStatusBanned,
+    putUserEnd,
 };
