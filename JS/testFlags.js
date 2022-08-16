@@ -10,7 +10,7 @@ async function readStatus() {
 }
 
 async function writeStatus(jsonInfo) {
-    fs.writeFileSync("status.txt", JSON.stringify(jsonInfo),(e) => {
+    fs.writeFileSync("status.txt", JSON.stringify(jsonInfo, null, 4),(e) => {
         if (err) {
             console.log(err);
         }
