@@ -18,7 +18,7 @@ function setup() {
   const driver = new Builder()
     .withCapabilities(caps)
     .forBrowser("firefox")
-    .setChromeOptions(opts)
+    .setFirefoxOptions(opts)
     .build();
 
   // await driver.get("https://www.google.com")
