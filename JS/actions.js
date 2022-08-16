@@ -9,11 +9,10 @@ function setup() {
   const opts = new chrome.Options();
   caps.setPageLoadStrategy("none");
   opts.addArguments([
-    "user-agent=Mozilla/5.0 (Linux; Android 10; X2-HT Build/QP1A.191005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.101 Mobile Safari/537.36 Instagram 191.1.0.41.124 Android (29/10; 480dpi; 1080x1920; HTC/htc; X2-HT; htc_ocla1_sprout",
     "--headless",
+    "user-agent=Mozilla/5.0 (Linux; Android 10; X2-HT Build/QP1A.191005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.101 Mobile Safari/537.36 Instagram 191.1.0.41.124 Android (29/10; 480dpi; 1080x1920; HTC/htc; X2-HT; htc_ocla1_sprout",
     "--no-sandbox",
     "--disable-dev-shm-usage",
-    "--remote-debugging-port=9222",
   ]);
 
   const driver = new Builder()
@@ -212,8 +211,7 @@ async function clickActivitySection(driver) {
   let activity = await driver.wait(
     until.elementLocated(
       By.xpath(
-        // Error here
-        "/tml/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/nav/div/div/div/div/div/div[4]/a"
+        "/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/nav/div/div/div/div/div/div[4]/a"
       )
     ),
     10000
