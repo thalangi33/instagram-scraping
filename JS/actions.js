@@ -9,7 +9,7 @@ function setup() {
   const binary = new firefox.Binary(
     "home/leohokahei/look4kol_crawler/instagram-scraping/JS/gecko/geckodriver"
   );
-  binary.addArgument("--headless");
+  binary.addArguments("--headless");
   binary.addArguments("--no-sandbox");
   binary.addArguments("--disable-dev-shm-usage");
   binary.addArguments(
