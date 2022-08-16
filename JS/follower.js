@@ -18,6 +18,7 @@ async function main() {
     let url = "";
     let nextMaxId = status.nextMaxId;
     let countNum = status.countNum;
+    let countFetch = status.countFetch;
 
     // driver setup
     const driver = actions.setup();
@@ -49,7 +50,6 @@ async function main() {
 
         await driver.switchTo().newWindow("tab");
 
-        let countFetch = 1;
         let flagFinish = 0;
 
         for (let i = 0; i < fetchTimes; i++) {

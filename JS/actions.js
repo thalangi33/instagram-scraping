@@ -1,4 +1,11 @@
-const { Builder, Capabilities, By, until, Key } = require("selenium-webdriver");
+const {
+    Builder,
+    Capabilities,
+    By,
+    until,
+    Key,
+    WebDriver,
+} = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
 const error = require("selenium-webdriver/lib/error");
 require("chromedriver");
@@ -18,8 +25,6 @@ function setup() {
         .setChromeOptions(opts)
         .build();
 
-    // await driver.get("https://www.google.com")
-
     return driver;
 }
 
@@ -27,21 +32,21 @@ async function readStatus() {
     const data = await fs.promises.readFile("status.txt", "utf8");
     return data;
 }
-async function statusGet(){
-    let temp = {}
-    await readStatus().then(data => {
-        console.log(data)
-        temp = JSON.parse(data)
+async function statusGet() {
+    let temp = {};
+    await readStatus().then((data) => {
+        console.log(data);
+        temp = JSON.parse(data);
     });
-    return temp
+    return temp;
 }
 
 async function writeStatus(jsonInfo) {
-    fs.writeFileSync("status.txt", JSON.stringify(jsonInfo),(e) => {
+    fs.writeFileSync("status.txt", JSON.stringify(jsonInfo, null, 4), (e) => {
         if (err) {
             console.log(err);
         }
-    })
+    });
 }
 
 function getRandomFloat(min, max) {
@@ -214,8 +219,7 @@ async function clickActivitySection(driver) {
     let activity = await driver.wait(
         until.elementLocated(
             By.xpath(
-                // Error here
-                "/tml/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/nav/div/div/div/div/div/div[4]/a"
+                "/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/nav/div/div/div/div/div/div[4]/a"
             )
         ),
         10000
@@ -600,5 +604,5 @@ module.exports = {
     randomActionSelector,
     findAvailableUser,
     changeStatusBanned,
-    putUserEnd
+    putUserEnd,
 };
