@@ -13,9 +13,9 @@ function setup() {
   opts.addArguments(
     "user-agent=Mozilla/5.0 (Linux; Android 10; X2-HT Build/QP1A.191005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.101 Mobile Safari/537.36 Instagram 191.1.0.41.124 Android (29/10; 480dpi; 1080x1920; HTC/htc; X2-HT; htc_ocla1_sprout"
   );
-  opts.setBinary(
+  /*opts.setBinary(
     "home/leohokahei/look4kol_crawler/instagram-scraping/JS/gecko/geckodriver"
-  );
+  );*/
 
   const driver = new Builder()
     .withCapabilities(caps)
