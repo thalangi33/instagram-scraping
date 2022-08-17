@@ -6,21 +6,22 @@ const fs = require("fs-extra");
 const caps = new Capabilities();
 
 function setup() {
-    const binary = new firefox.Binary(
-        "home/leohokahei/look4kol_crawler/instagram-scraping/JS/gecko/geckodriver"
-    );
-    binary.addArguments("--headless");
-    binary.addArguments("--no-sandbox");
-    binary.addArguments("--disable-dev-shm-usage");
-    binary.addArguments(
-        "user-agent=Mozilla/5.0 (Linux; Android 10; X2-HT Build/QP1A.191005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.101 Mobile Safari/537.36 Instagram 191.1.0.41.124 Android (29/10; 480dpi; 1080x1920; HTC/htc; X2-HT; htc_ocla1_sprout"
-    );
+  const opts = new firefox.Options();
+  opts.headless();
+  opts.addArguments("--no-sandbox");
+  opts.addArguments("--disable-dev-shm-usage");
+  opts.addArguments(
+    "user-agent=Mozilla/5.0 (Linux; Android 10; X2-HT Build/QP1A.191005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.101 Mobile Safari/537.36 Instagram 191.1.0.41.124 Android (29/10; 480dpi; 1080x1920; HTC/htc; X2-HT; htc_ocla1_sprout"
+  );
+  opts.setBinary(
+    "home/leohokahei/look4kol_crawler/instagram-scraping/JS/gecko/geckodriver"
+  );
 
-    const driver = new Builder()
-        .withCapabilities(caps)
-        .forBrowser("firefox")
-        .setFirefoxOptions(new firefox.Options().setBinary(binary))
-        .build();
+  const driver = new Builder()
+    .withCapabilities(caps)
+    .forBrowser("firefox")
+    .setFirefoxOptions(opts)
+    .build();
 
     // await driver.get("https://www.google.com")
 
