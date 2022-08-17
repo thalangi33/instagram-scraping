@@ -36,7 +36,7 @@ async function main() {
     // driver setup
     const driver = actions.setup();
     // setting the timeout conditions
-    driver.manage().setTimeouts({ pageLoad: 10000 });
+    driver.manage().setTimeouts({ pageLoad: 5000 });
 
     try {
         // login to instagram
