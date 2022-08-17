@@ -1,7 +1,7 @@
 const { Builder, Capabilities, By, until, Key } = require("selenium-webdriver");
 const firefox = require("selenium-webdriver/firefox");
 const error = require("selenium-webdriver/lib/error");
-require("geckodriver");
+//require("geckodriver");
 const fs = require("fs-extra");
 const caps = new Capabilities();
 
