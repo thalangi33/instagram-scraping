@@ -151,7 +151,6 @@ async function main() {
                 await driver.sleep(2000);
 
                 countFetch++;
-                await driver.get(url);
             }
 
             console.log(`This is countFetch: ${countFetch}`);
