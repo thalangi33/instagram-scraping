@@ -1,27 +1,26 @@
 const { Builder, Capabilities, By, until, Key } = require("selenium-webdriver");
 const firefox = require("selenium-webdriver/firefox");
+const chrome = require("selenium-webdriver/chrome");
 const error = require("selenium-webdriver/lib/error");
 //require("geckodriver");
 const fs = require("fs-extra");
 const caps = new Capabilities();
 
 function setup() {
-  const opts = new firefox.Options();
-  opts.headless();
-  //opts.addArguments("--no-sandbox");
-  //opts.addArguments("--disable-dev-shm-usage");
-  opts.addArguments(
-    "user-agent=Mozilla/5.0 (Linux; Android 10; X2-HT Build/QP1A.191005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.101 Mobile Safari/537.36 Instagram 191.1.0.41.124 Android (29/10; 480dpi; 1080x1920; HTC/htc; X2-HT; htc_ocla1_sprout"
-  );
-  opts.setBinary(
-    "/usr/local/bin/geckodriver"
-  );
+    const opts = new firefox.Options();
+    opts.headless();
+    //opts.addArguments("--no-sandbox");
+    //opts.addArguments("--disable-dev-shm-usage");
+    opts.addArguments(
+        "user-agent=Mozilla/5.0 (Linux; Android 10; X2-HT Build/QP1A.191005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.101 Mobile Safari/537.36 Instagram 191.1.0.41.124 Android (29/10; 480dpi; 1080x1920; HTC/htc; X2-HT; htc_ocla1_sprout"
+    );
+    opts.setBinary("/usr/local/bin/geckodriver");
 
-  const driver = new Builder()
-    .withCapabilities(caps)
-    .forBrowser("firefox")
-    .setFirefoxOptions(opts)
-    .build();
+    const driver = new Builder()
+        .withCapabilities(caps)
+        .forBrowser("firefox")
+        .setFirefoxOptions(opts)
+        .build();
 
     // await driver.get("https://www.google.com")
 
@@ -156,7 +155,7 @@ async function addInstaToHomeScreen(driver) {
     await driver.sleep(getRandomFloat(2000, 3500));
     let cancel = await driver
         .findElement(
-            By.xpath("/html/body/div[4]/div/div/div/div/div[3]/button[2]")
+            By.xpath("/html/body/div[5]/div/div/div/div/div[3]/button[2]")
         )
         .then(
             function (webElement) {
@@ -176,7 +175,7 @@ async function turnOnNotificaiton(driver) {
     await driver.sleep(getRandomFloat(2000, 3500));
     let cancel = await driver
         .findElement(
-            By.xpath("/html/body/div[5]/div/div/div/div/div[3]/button[2]")
+            By.xpath("/html/body/div[4]/div/div/div/div/div[3]/button[2]")
         )
         .then(
             function (webElement) {
@@ -395,7 +394,8 @@ async function directMessage(driver, sendeeString) {
             By.xpath(
                 "/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/div/section/div[2]/div/div[1]/div/div[2]/input"
             )
-        )
+        ),
+        10000
     );
     await sendee.click();
 
@@ -427,7 +427,8 @@ async function goToProfilePage(driver) {
             By.xpath(
                 "/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/nav/div/div/div/div/div/div[5]/a"
             )
-        )
+        ),
+        10000
     );
     await profile.click();
     await driver.sleep(getRandomFloat(1000, 3000));
@@ -438,7 +439,8 @@ async function postsClick(driver) {
             By.xpath(
                 "/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/main/div/div[1]/a[1]"
             )
-        )
+        ),
+        10000
     );
     await posts.click();
 }
@@ -448,7 +450,8 @@ async function feedsClick(driver) {
             By.xpath(
                 "/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/main/div/div[1]/a[2]"
             )
-        )
+        ),
+        10000
     );
     await feeds.click();
 }
@@ -458,7 +461,8 @@ async function savedClick(driver) {
             By.xpath(
                 "/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/main/div/div[1]/a[3]"
             )
-        )
+        ),
+        10000
     );
     await saved.click();
 }
@@ -468,7 +472,8 @@ async function taggedClick(driver) {
             By.xpath(
                 "/html/body/div[1]/div/div/div/div[1]/div/div/div/div[1]/div[1]/section/main/div/div[1]/a[4]"
             )
-        )
+        ),
+        10000
     );
     await tagged.click();
 }
@@ -599,6 +604,7 @@ module.exports = {
     writeStatus,
     loginInstagram,
     setup,
+    setupChrome,
     checkSaveLoginInfoNoti,
     addInstaToHomeScreen,
     turnOnNotificaiton,
