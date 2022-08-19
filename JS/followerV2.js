@@ -10,6 +10,7 @@ const caps = new Capabilities();
 var actions = require("./actions");
 const { stat } = require("fs");
 
+// This version only copies CSVs
 async function main() {
     USERNAME = "rolotilinsreyegorezenkov";
     PASSWORD = "look4kol";
@@ -33,7 +34,7 @@ async function main() {
     console.log(nextMaxId);
 
     let logoutUrl = "https://instagram.com/accounts/logout";
-    FETCHNUM = 3;
+    FETCHNUM = 5;
 
     // cvs setup
     const fields = [
@@ -50,7 +51,7 @@ async function main() {
     const parser = new Parser(opts);
 
     // driver setup
-    const driver = actions.setup();
+    const driver = actions.setupChrome();
     // setting the timeout conditions
     driver.manage().setTimeouts({ pageLoad: 5000 });
 
@@ -93,72 +94,10 @@ async function main() {
 
             // write data into files
             if (jsonInfo.next_max_id != null) {
-                let pathF1 = `./fetch_data/follower_list/${countFetch}_follower_list.txt`;
-                let pathF2 = `./fetch_data/follower_list_extra/${countFetch}_follower_list_extra.txt`;
-                let pathF3 = `./fetch_data/response/${countFetch}_response.txt`;
-
-                fs.appendFileSync(pathF3, htmlText, (e) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
                 let userItem = jsonInfo.users;
                 nextMaxId = jsonInfo.next_max_id;
 
                 console.log(nextMaxId);
-
-                fs.appendFileSync(pathF1, `##### FETCH_NUM = ${j}\n`, (e) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
-                fs.appendFileSync(pathF2, `##### FETCH_NUM = ${j}\n`, (e) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
-
-                for (let item of userItem) {
-                    console.log(item.username);
-                    fs.appendFileSync(
-                        pathF1,
-                        `${countNum} ${item.username}\n`,
-                        (e) => {
-                            if (err) {
-                                console.log(err);
-                            }
-                        }
-                    );
-                    fs.appendFileSync(
-                        pathF2,
-                        `${countNum} username: \"${item.username}\", pk: \"${item.pk}\", is_private: \"${item.is_private}\"\n`,
-                        (e) => {
-                            if (err) {
-                                console.log(err);
-                            }
-                        }
-                    );
-                    countNum++;
-                }
-
-                fs.appendFileSync(
-                    pathF1,
-                    `next_max_id = ${nextMaxId}\n`,
-                    (e) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                    }
-                );
-                fs.appendFileSync(
-                    pathF2,
-                    `next_max_id = ${nextMaxId}\n`,
-                    (e) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                    }
-                );
 
                 console.log(`##### FETCH_NUM = ${j}\n`);
 
@@ -194,50 +133,7 @@ async function main() {
 
             if (jsonInfo.next_max_id == null) {
                 if (jsonInfo.user != null) {
-                    let pathF1 = `./fetch_data/follower_list/${countFetch}_follower_list.txt`;
-                    let pathF2 = `./fetch_data/follower_list_extra/${countFetch}_follower_list_extra.txt`;
-                    let pathF3 = `./fetch_data/response/${countFetch}_response.txt`;
-
-                    fs.appendFileSync(pathF3, htmlText, (e) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                    });
                     let userItem = jsonInfo.users;
-
-                    fs.appendFileSync(pathF1, `##### FETCH_NUM = ${j}`, (e) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                    });
-                    fs.appendFileSync(pathF2, `##### FETCH_NUM = ${j}`, (e) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                    });
-
-                    for (let item of userItem) {
-                        console.log(item.username);
-                        fs.appendFileSync(
-                            pathF1,
-                            `${countNum} ${item.username}\n`,
-                            (e) => {
-                                if (err) {
-                                    console.log(err);
-                                }
-                            }
-                        );
-                        fs.appendFileSync(
-                            pathF2,
-                            `${countNum} username: \"${item.username}\", pk: \"${item.pk}\", is_private: \"${item.is_private}\"\n`,
-                            (e) => {
-                                if (err) {
-                                    console.log(err);
-                                }
-                            }
-                        );
-                        countNum++;
-                    }
 
                     console.log(`##### FETCH_NUM = ${j}`);
 
@@ -250,9 +146,11 @@ async function main() {
                         actions.renameKey(item, "is_verified", "isVerified");
                         Object.assign(item, {
                             profileUrl: `https://www.instagram.com/${item.username}`,
+                        });
+                        Object.assign(item, {
+                            profileUrl: `https://www.instagram.com/${item.username}`,
                             query: `https://www.instagram.com/${KOL}`,
                         });
-
                         countNum++;
                     }
                     const csv = parser.parse(userItem);
@@ -302,7 +200,7 @@ async function main() {
         await actions.writeStatus(status);
 
         // wait some time before logging
-        await driver.sleep(3600000);
+        // await driver.sleep(3600000);
     } catch (e) {
         console.log("Error is found: " + e.name);
         console.log(e);

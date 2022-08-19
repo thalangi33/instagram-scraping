@@ -33,6 +33,7 @@ function setupChrome() {
     opts.addArguments([
         "user-agent=Mozilla/5.0 (Linux; Android 10; X2-HT Build/QP1A.191005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.101 Mobile Safari/537.36 Instagram 191.1.0.41.124 Android (29/10; 480dpi; 1080x1920; HTC/htc; X2-HT; htc_ocla1_sprout",
     ]);
+    opts.addArguments("--start-maximized");
 
     const driver = new Builder()
         .withCapabilities(caps)
@@ -153,21 +154,17 @@ async function checkSaveLoginInfoNoti(driver) {
 
 async function addInstaToHomeScreen(driver) {
     await driver.sleep(getRandomFloat(2000, 3500));
-    let cancel = await driver
-        .findElement(
-            By.xpath("/html/body/div[5]/div/div/div/div/div[3]/button[2]")
-        )
-        .then(
-            function (webElement) {
-                webElement.click();
-                return true;
-            },
-            function (err) {
-                console.log("No add insta to home screen notification");
-                console.log(err.name);
-                return false;
-            }
-        );
+    let cancel = await driver.findElement(By.css("button._a9--._a9_1")).then(
+        function (webElement) {
+            webElement.click();
+            return true;
+        },
+        function (err) {
+            console.log("No add insta to home screen notification");
+            console.log(err.name);
+            return false;
+        }
+    );
     return true;
 }
 
@@ -175,7 +172,7 @@ async function turnOnNotificaiton(driver) {
     await driver.sleep(getRandomFloat(2000, 3500));
     let cancel = await driver
         .findElement(
-            By.xpath("/html/body/div[4]/div/div/div/div/div[3]/button[2]")
+            By.xpath("/html/body/div[5]/div/div/div/div/div[3]/button[2]")
         )
         .then(
             function (webElement) {
@@ -555,6 +552,7 @@ async function findAvailableUser() {
         if (user.status === "online") {
             username = user.username;
             password = user.password;
+            break;
         }
     }
     return { username, password };
@@ -597,6 +595,12 @@ async function putUserEnd(username) {
         .then(() => console.log("Success in changing the acc order!"));
 }
 
+// rename keys for jsonToCVS
+function renameKey(obj, oldKey, newKey) {
+    obj[newKey] = obj[oldKey];
+    delete obj[oldKey];
+}
+
 module.exports = {
     getRandomFloat,
     readStatus,
@@ -623,4 +627,5 @@ module.exports = {
     findAvailableUser,
     changeStatusBanned,
     putUserEnd,
+    renameKey,
 };

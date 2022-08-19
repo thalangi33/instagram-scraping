@@ -36,6 +36,7 @@ async function findAvailableUser() {
         if (user.status === "online") {
             username = user.username;
             password = user.password;
+            break;
         }
     }
     return { username, password };
